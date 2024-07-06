@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-import quake_compose.composeapp.generated.resources.Res
-import quake_compose.composeapp.generated.resources.compose_multiplatform
+import quake_compose.demo.composeapp.generated.resources.Res
+import quake_compose.demo.composeapp.generated.resources.compose_multiplatform
 
 @Composable
 @Preview
