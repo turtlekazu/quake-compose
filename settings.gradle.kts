@@ -29,3 +29,4 @@ dependencyResolutionManagement {
 }
 
 include(":demo:composeApp")
+include(":core")
