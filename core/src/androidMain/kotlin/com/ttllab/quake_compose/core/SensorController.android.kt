@@ -15,7 +15,7 @@ actual class SensorController {
     actual var accelerationValue: MutableState<Vector3D> = mutableStateOf(Vector3D())
     actual var rotationValue: MutableState<Vector3D> = mutableStateOf(Vector3D())
 
-    fun init(context: Context) {
+    actual fun init(context: Context) {
         sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         val accelerationSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
         val rotationSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
