@@ -10,7 +10,7 @@
             tools:node="merge"
             >
             <meta-data
-                android:name="com.ttllab.quake_compose.core.AppContextInitializer"
+                android:name="com.ttllab.quake_compose.core.entity.AppContextInitializer"
                 android:value="androidx.startup"
                 />
         </provider>
