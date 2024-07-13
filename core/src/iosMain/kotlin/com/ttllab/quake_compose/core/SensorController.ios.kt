@@ -2,7 +2,6 @@ package com.ttllab.quake_compose.core
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import com.ttllab.quake_compose.core.entity.Context
 import com.ttllab.quake_compose.core.entity.Vector3D
 
 actual class SensorController {

@@ -1,6 +1,7 @@
 package com.ttllab.quake_compose.core.entity
 
 import android.app.Application
+import android.content.Context
 import androidx.startup.Initializer
 
 internal object AppContext {
@@ -11,7 +12,7 @@ internal object AppContext {
     }
 
     fun get(): Context {
-        if(::application.isInitialized.not()) throw Exception("Application context isn't initialized")
+        if (::application.isInitialized.not()) throw Exception("Application context isn't initialized")
         return application.applicationContext
     }
 }
@@ -21,5 +22,6 @@ internal class AppContextInitializer : Initializer<Context> {
         AppContext.setUp(context.applicationContext)
         return AppContext.get()
     }
+
     override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
 }
