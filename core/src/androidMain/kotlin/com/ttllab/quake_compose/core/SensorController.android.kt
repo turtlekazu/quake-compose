@@ -7,6 +7,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import com.ttllab.quake_compose.core.entity.AppContext
 import com.ttllab.quake_compose.core.entity.Vector3D
 
 actual class SensorController {
@@ -14,14 +15,12 @@ actual class SensorController {
     actual var accelerationValue: MutableState<Vector3D> = mutableStateOf(Vector3D())
     actual var rotationValue: MutableState<Vector3D> = mutableStateOf(Vector3D())
 
-    actual fun init(context: Context) {
-        sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+    init {
+        sensorManager = AppContext.get().getSystemService(Context.SENSOR_SERVICE) as SensorManager
         val accelerationSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
         val rotationSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
-
         val accelerationListener = getAccelerationListener()
         val rotationListener = getRotationListener()
-
         sensorManager?.let { sensor ->
             sensor.registerListener(
                 accelerationListener,
