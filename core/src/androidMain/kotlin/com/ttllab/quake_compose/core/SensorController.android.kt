@@ -9,7 +9,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.ttllab.quake_compose.core.entity.Vector3D
 
-
 actual class SensorController {
     private var sensorManager: SensorManager? = null
     actual var accelerationValue: MutableState<Vector3D> = mutableStateOf(Vector3D())
@@ -27,52 +26,62 @@ actual class SensorController {
             sensor.registerListener(
                 accelerationListener,
                 accelerationSensor,
-                SensorManager.SENSOR_DELAY_NORMAL
+                SensorManager.SENSOR_DELAY_NORMAL,
             )
 
             sensor.registerListener(
                 rotationListener,
                 rotationSensor,
-                SensorManager.SENSOR_DELAY_NORMAL
+                SensorManager.SENSOR_DELAY_NORMAL,
             )
         }
     }
 
     private fun getAccelerationListener(): SensorEventListener {
-        val listener = object : SensorEventListener {
-            override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
+        val listener =
+            object : SensorEventListener {
+                override fun onAccuracyChanged(
+                    sensor: Sensor?,
+                    accuracy: Int,
+                ) {}
 
-            override fun onSensorChanged(event: SensorEvent?) {
-                event?.let {
-                    if (it.sensor.type == Sensor.TYPE_LINEAR_ACCELERATION) {
-                        accelerationValue.value = Vector3D(
-                            x = it.values[0], // Use this value
-                            y = it.values[1], // Use this value
-                            z = it.values[2]
-                        )
+                override fun onSensorChanged(event: SensorEvent?) {
+                    event?.let {
+                        if (it.sensor.type == Sensor.TYPE_LINEAR_ACCELERATION) {
+                            accelerationValue.value =
+                                Vector3D(
+                                    x = it.values[0], // Use this value
+                                    y = it.values[1], // Use this value
+                                    z = it.values[2],
+                                )
+                        }
                     }
                 }
             }
-        }
         return listener
     }
 
     private fun getRotationListener(): SensorEventListener {
-        val listener = object : SensorEventListener {
-            override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
+        val listener =
+            object : SensorEventListener {
+                override fun onAccuracyChanged(
+                    sensor: Sensor?,
+                    accuracy: Int,
+                ) {}
 
-            override fun onSensorChanged(event: SensorEvent?) {
-                event?.let {
-                    if (it.sensor.type == Sensor.TYPE_GYROSCOPE) {
-                        rotationValue.value = Vector3D(
-                            x = it.values[0],
-                            y = it.values[1],
-                            z = it.values[2], // Use this value
-                        )
+                override fun onSensorChanged(event: SensorEvent?) {
+                    event?.let {
+                        if (it.sensor.type == Sensor.TYPE_GYROSCOPE) {
+                            rotationValue.value =
+                                Vector3D(
+                                    x = it.values[0],
+                                    y = it.values[1],
+                                    z = it.values[2], // Use this value
+                                )
+                        }
                     }
                 }
             }
-        }
         return listener
     }
 }
