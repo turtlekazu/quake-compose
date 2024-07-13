@@ -3,6 +3,7 @@ package com.ttllab.quake_compose.core
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -16,16 +17,18 @@ fun QuakeContent(
     content: @Composable () -> Unit,
 ) {
     val sensorController = remember { SensorController() }
+    val accelerationValue by sensorController.accelerationValue
+    val rotationValue by sensorController.rotationValue
 
     Box(
         modifier = modifier
-            .rotate(if (rotationEnabled) sensorController.rotationValue.value.z else 0f)
+            .rotate(if (rotationEnabled) rotationValue.z else 0f)
             .offset(
                 x = if (positionEnabled) {
-                    sensorController.accelerationValue.value.x.dp * -1 * 2f
+                    accelerationValue.x.dp * -1 * 2f
                 } else 0.dp,
                 y = if (positionEnabled) {
-                    sensorController.accelerationValue.value.y.dp * -1 * 2f
+                    accelerationValue.y.dp * -1 * 2f
                 } else 0.dp
             )
     ) {
