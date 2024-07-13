@@ -21,8 +21,12 @@ fun QuakeContent(
         modifier = modifier
             .rotate(if (rotationEnabled) sensorController.rotationValue.value.z else 0f)
             .offset(
-                x = if (positionEnabled) sensorController.accelerationValue.value.x.dp else 0.dp,
-                y = if (positionEnabled) sensorController.accelerationValue.value.y.dp else 0.dp
+                x = if (positionEnabled) {
+                    sensorController.accelerationValue.value.x.dp * -1 * 2f
+                } else 0.dp,
+                y = if (positionEnabled) {
+                    sensorController.accelerationValue.value.y.dp * -1 * 2f
+                } else 0.dp
             )
     ) {
         content()
