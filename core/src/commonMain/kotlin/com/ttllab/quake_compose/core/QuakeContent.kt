@@ -19,6 +19,8 @@ fun QuakeContent(
     positionEnabled: Boolean = true,
     content: @Composable () -> Unit,
 ) {
+    val sensorController = remember { SensorController() }
+
     Box(
         modifier = modifier
             .background(backgroundColor)
@@ -27,10 +29,10 @@ fun QuakeContent(
     ) {
         Box(
             modifier = Modifier
-                .rotate(if (rotationEnabled) rotationZ else 0f)
+                .rotate(if (rotationEnabled) sensorController.rotationValue.value.z else 0f)
                 .offset(
-                    x = if (positionEnabled) offsetX.dp else 0.dp,
-                    y = if (positionEnabled) offsetY.dp else 0.dp
+                    x = if (positionEnabled) sensorController.accelerationValue.value.x.dp else 0.dp,
+                    y = if (positionEnabled) sensorController.accelerationValue.value.y.dp else 0.dp
                 )
         ) {
             content()
