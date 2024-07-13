@@ -1,5 +1,6 @@
 package com.ttllab.quake_compose.core
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
@@ -20,16 +21,16 @@ fun QuakeContent(
     val accelerationValue by sensorController.accelerationValue
     val rotationValue by sensorController.rotationValue
 
+    val rotationZ: Float by animateFloatAsState(rotationValue.z)
+    val offsetX: Float by animateFloatAsState(-accelerationValue.x * 2f)
+    val offsetY: Float by animateFloatAsState(-accelerationValue.y * 2f)
+
     Box(
         modifier = modifier
-            .rotate(if (rotationEnabled) rotationValue.z else 0f)
+            .rotate(if (rotationEnabled) rotationZ else 0f)
             .offset(
-                x = if (positionEnabled) {
-                    accelerationValue.x.dp * -1 * 2f
-                } else 0.dp,
-                y = if (positionEnabled) {
-                    accelerationValue.y.dp * -1 * 2f
-                } else 0.dp
+                x = if (positionEnabled) offsetX.dp else 0.dp,
+                y = if (positionEnabled) offsetY.dp else 0.dp
             )
     ) {
         content()
