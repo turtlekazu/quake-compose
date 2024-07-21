@@ -2,13 +2,11 @@ package com.ttllab.quake_compose.core
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.graphicsLayer
 
 @Composable
 fun QuakeContent(
@@ -27,11 +25,11 @@ fun QuakeContent(
 
     Box(
         modifier = modifier
-            .rotate(if (rotationEnabled) rotationZ else 0f)
-            .offset(
-                x = if (positionEnabled) offsetX.dp else 0.dp,
-                y = if (positionEnabled) offsetY.dp else 0.dp
-            )
+            .graphicsLayer {
+                this.rotationZ = if (rotationEnabled) rotationZ else 0f
+                this.translationX = if (positionEnabled) offsetX else 0f
+                this.translationY = if (positionEnabled) offsetY else 0f
+            }
     ) {
         content()
     }
