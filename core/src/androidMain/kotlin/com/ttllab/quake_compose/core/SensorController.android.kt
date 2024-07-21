@@ -17,10 +17,15 @@ actual class SensorController {
 
     init {
         sensorManager = AppContext.get().getSystemService(Context.SENSOR_SERVICE) as SensorManager
+    }
+
+    actual fun start() {
         val accelerationSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
         val rotationSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
+
         val accelerationListener = getAccelerationListener()
         val rotationListener = getRotationListener()
+
         sensorManager?.let { sensor ->
             sensor.registerListener(
                 accelerationListener,
@@ -33,6 +38,13 @@ actual class SensorController {
                 rotationSensor,
                 SensorManager.SENSOR_DELAY_NORMAL,
             )
+        }
+    }
+
+    actual fun stop() {
+        sensorManager?.let { sensor ->
+            sensor.unregisterListener(getAccelerationListener())
+            sensor.unregisterListener(getRotationListener())
         }
     }
 
