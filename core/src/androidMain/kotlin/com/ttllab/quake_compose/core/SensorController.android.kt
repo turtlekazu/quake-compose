@@ -12,8 +12,8 @@ import com.ttllab.quake_compose.core.entity.Vector3D
 
 actual class SensorController {
     private var sensorManager: SensorManager? = null
-    actual var accelerationValue: MutableState<Vector3D> = mutableStateOf(Vector3D())
-    actual var rotationValue: MutableState<Vector3D> = mutableStateOf(Vector3D())
+    actual val accelerationValue: MutableState<Vector3D> = mutableStateOf(Vector3D())
+    actual val rotationValue: MutableState<Vector3D> = mutableStateOf(Vector3D())
 
     init {
         sensorManager = AppContext.get().getSystemService(Context.SENSOR_SERVICE) as SensorManager
