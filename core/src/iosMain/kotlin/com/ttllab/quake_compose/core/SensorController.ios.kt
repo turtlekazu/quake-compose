@@ -5,13 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import com.ttllab.quake_compose.core.entity.Vector3D
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
-import platform.CoreMotion.CMAcceleration
 import platform.CoreMotion.CMAccelerometerData
 import platform.CoreMotion.CMAccelerometerHandler
 import platform.CoreMotion.CMGyroData
 import platform.CoreMotion.CMGyroHandler
 import platform.CoreMotion.CMMotionManager
-import platform.CoreMotion.CMRotationRate
 import platform.Foundation.NSError
 import platform.Foundation.NSOperationQueue
 
@@ -35,18 +33,21 @@ actual class SensorController {
         }
 
         // Set the update interval
-        sensorManager.accelerometerUpdateInterval = 0.1
-        sensorManager.gyroUpdateInterval = 0.1
+        val interval = 1.0 / 60.0 // 60Hz
+        sensorManager.accelerometerUpdateInterval = interval
+        sensorManager.gyroUpdateInterval = interval
 
+        // Define the sensor handlers
         val accelerometerHandler: CMAccelerometerHandler =
             { data: CMAccelerometerData?, error: NSError? ->
                 data?.let {
-                    val acceleration: CMAcceleration = it.acceleration.useContents { this }
-                    accelerationValue.value = Vector3D(
-                        x = acceleration.x.toFloat(),
-                        y = acceleration.y.toFloat(),
-                        z = acceleration.z.toFloat(),
-                    )
+                    it.acceleration.useContents {
+                        accelerationValue.value = Vector3D(
+                            x = x.toFloat(),
+                            y = y.toFloat(),
+                            z = z.toFloat(),
+                        )
+                    }
                 } ?: run {
                     println("Error: $error")
                 }
@@ -54,12 +55,13 @@ actual class SensorController {
 
         val gyroHandler: CMGyroHandler = { data: CMGyroData?, error: NSError? ->
             data?.let {
-                val rotation: CMRotationRate = it.rotationRate.useContents { this }
-                rotationValue.value = Vector3D(
-                    x = rotation.x.toFloat(),
-                    y = rotation.y.toFloat(),
-                    z = rotation.z.toFloat(),
-                )
+                it.rotationRate.useContents {
+                    rotationValue.value = Vector3D(
+                        x = x.toFloat(),
+                        y = y.toFloat(),
+                        z = z.toFloat(),
+                    )
+                }
             } ?: run {
                 println("Error: $error")
             }
