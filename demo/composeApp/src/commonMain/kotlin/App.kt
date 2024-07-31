@@ -1,15 +1,14 @@
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,21 +37,36 @@ fun App() {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxSize()
             ) {
-                val greeting = remember { Greeting().greet() }
                 Column(
                     Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Image(painterResource(Res.drawable.compose_multiplatform), null)
-                    Text("Compose: $greeting")
+                    Text("Quake Compose Demo")
                 }
 
                 Spacer(Modifier.height(20.dp))
 
-                Button(onClick = { rotationEnabled = !rotationEnabled }) {
+                Button(
+                    onClick = { rotationEnabled = !rotationEnabled },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = if (rotationEnabled) MaterialTheme.colors.primary
+                        else {
+                            MaterialTheme.colors.secondary
+                        }
+                    ),
+                ) {
                     Text((if (rotationEnabled) "Disable" else "Enable") + " Rotation")
                 }
-                Button(onClick = { positionEnabled = !positionEnabled }) {
+                Button(
+                    onClick = { positionEnabled = !positionEnabled },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = if (positionEnabled) MaterialTheme.colors.primary
+                        else {
+                            MaterialTheme.colors.secondary
+                        }
+                    ),
+                ) {
                     Text((if (positionEnabled) "Disable" else "Enable") + " Position")
                 }
             }
