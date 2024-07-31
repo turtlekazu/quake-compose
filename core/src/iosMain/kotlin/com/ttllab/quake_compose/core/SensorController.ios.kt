@@ -19,7 +19,6 @@ actual class SensorController {
 
     @OptIn(ExperimentalForeignApi::class)
     actual fun start() {
-        // Check if the sensor is available
         if (!sensorManager.isDeviceMotionAvailable()) {
             return
         }
@@ -27,12 +26,10 @@ actual class SensorController {
             return
         }
 
-        // Set the update interval
         val interval = 1.0 / 60.0 // 60Hz
-        val coefficient = 20f
+        val coefficient = 50f
         sensorManager.deviceMotionUpdateInterval = interval
 
-        // Define the sensor handlers
         val deviceMotionHandler: CMDeviceMotionHandler =
             { data: CMDeviceMotion?, error: NSError? ->
                 data?.let {
@@ -56,7 +53,6 @@ actual class SensorController {
                 }
             }
 
-        // Start the sensor updates
         sensorManager.startDeviceMotionUpdatesToQueue(queue, deviceMotionHandler)
     }
 
