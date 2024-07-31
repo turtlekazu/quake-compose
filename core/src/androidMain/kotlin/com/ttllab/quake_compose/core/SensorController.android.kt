@@ -49,6 +49,7 @@ actual class SensorController {
     }
 
     private fun getAccelerationListener(): SensorEventListener {
+        val coefficient = 5f
         val listener =
             object : SensorEventListener {
                 override fun onAccuracyChanged(
@@ -64,7 +65,7 @@ actual class SensorController {
                                     x = it.values[0], // Use this value
                                     y = it.values[1], // Use this value
                                     z = it.values[2],
-                                )
+                                ) * coefficient
                         }
                     }
                 }

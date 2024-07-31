@@ -50,8 +50,8 @@ fun QuakeContentBox(
     val rotationValue by sensorController.rotationValue
 
     val rotationZ: Float by animateFloatAsState(rotationValue.z)
-    val offsetX: Float by animateFloatAsState(-accelerationValue.x * 2f)
-    val offsetY: Float by animateFloatAsState(-accelerationValue.y * 2f)
+    val offsetX: Float by animateFloatAsState(-accelerationValue.x)
+    val offsetY: Float by animateFloatAsState(-accelerationValue.y)
 
     Box(
         modifier = modifier
