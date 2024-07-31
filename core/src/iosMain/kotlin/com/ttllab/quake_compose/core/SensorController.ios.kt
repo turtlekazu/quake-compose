@@ -5,10 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import com.ttllab.quake_compose.core.entity.Vector3D
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
-import platform.CoreMotion.CMAccelerometerData
-import platform.CoreMotion.CMAccelerometerHandler
-import platform.CoreMotion.CMGyroData
-import platform.CoreMotion.CMGyroHandler
+import platform.CoreMotion.CMDeviceMotion
+import platform.CoreMotion.CMDeviceMotionHandler
 import platform.CoreMotion.CMMotionManager
 import platform.Foundation.NSError
 import platform.Foundation.NSOperationQueue
@@ -22,10 +20,7 @@ actual class SensorController {
     @OptIn(ExperimentalForeignApi::class)
     actual fun start() {
         // Check if the sensor is available
-        if (!sensorManager.isAccelerometerAvailable()) {
-            return
-        }
-        if (!sensorManager.isGyroAvailable()) {
+        if (!sensorManager.isDeviceMotionAvailable()) {
             return
         }
         if (queue == null) {
@@ -34,15 +29,23 @@ actual class SensorController {
 
         // Set the update interval
         val interval = 1.0 / 60.0 // 60Hz
-        sensorManager.accelerometerUpdateInterval = interval
-        sensorManager.gyroUpdateInterval = interval
+        val coefficient = 20f
+        sensorManager.deviceMotionUpdateInterval = interval
 
         // Define the sensor handlers
-        val accelerometerHandler: CMAccelerometerHandler =
-            { data: CMAccelerometerData?, error: NSError? ->
+        val deviceMotionHandler: CMDeviceMotionHandler =
+            { data: CMDeviceMotion?, error: NSError? ->
                 data?.let {
-                    it.acceleration.useContents {
+                    it.userAcceleration.useContents {
                         accelerationValue.value = Vector3D(
+                            x = x.toFloat(),
+                            y = y.toFloat(),
+                            z = z.toFloat(),
+                        ) * coefficient
+                    }
+
+                    it.rotationRate.useContents {
+                        rotationValue.value = Vector3D(
                             x = x.toFloat(),
                             y = y.toFloat(),
                             z = z.toFloat(),
@@ -53,31 +56,13 @@ actual class SensorController {
                 }
             }
 
-        val gyroHandler: CMGyroHandler = { data: CMGyroData?, error: NSError? ->
-            data?.let {
-                it.rotationRate.useContents {
-                    rotationValue.value = Vector3D(
-                        x = x.toFloat(),
-                        y = y.toFloat(),
-                        z = z.toFloat(),
-                    )
-                }
-            } ?: run {
-                println("Error: $error")
-            }
-        }
-
         // Start the sensor updates
-        sensorManager.startAccelerometerUpdatesToQueue(queue, accelerometerHandler)
-        sensorManager.startGyroUpdatesToQueue(queue, gyroHandler)
+        sensorManager.startDeviceMotionUpdatesToQueue(queue, deviceMotionHandler)
     }
 
     actual fun stop() {
-        if (sensorManager.accelerometerActive) {
-            sensorManager.stopAccelerometerUpdates()
-        }
-        if (sensorManager.gyroActive) {
-            sensorManager.stopGyroUpdates()
+        if (sensorManager.deviceMotionActive) {
+            sensorManager.stopDeviceMotionUpdates()
         }
     }
 }
