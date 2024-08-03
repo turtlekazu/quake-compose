@@ -1,12 +1,13 @@
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Switch
+import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -47,29 +48,37 @@ fun App() {
 
                 Spacer(Modifier.height(20.dp))
 
-                Button(
-                    onClick = { rotationEnabled = !rotationEnabled },
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = if (rotationEnabled) MaterialTheme.colors.primary
-                        else {
-                            MaterialTheme.colors.secondary
-                        }
-                    ),
-                ) {
-                    Text((if (rotationEnabled) "Disable" else "Enable") + " Rotation")
-                }
-                Button(
-                    onClick = { positionEnabled = !positionEnabled },
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = if (positionEnabled) MaterialTheme.colors.primary
-                        else {
-                            MaterialTheme.colors.secondary
-                        }
-                    ),
-                ) {
-                    Text((if (positionEnabled) "Disable" else "Enable") + " Position")
-                }
+                Toggle(
+                    text = "Rotation",
+                    checked = rotationEnabled,
+                    onCheckedChange = { rotationEnabled = it },
+                )
+                Toggle(
+                    text = "Position",
+                    checked = positionEnabled,
+                    onCheckedChange = { positionEnabled = it },
+                )
             }
         }
+    }
+}
+
+@Composable
+private fun Toggle(
+    text: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(text)
+
+        Switch(
+            checked = checked,
+            onCheckedChange = onCheckedChange,
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = MaterialTheme.colors.primary,
+                checkedTrackColor = MaterialTheme.colors.primary.copy(alpha = 0.5f),
+            )
+        )
     }
 }
