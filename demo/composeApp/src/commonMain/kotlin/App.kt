@@ -22,6 +22,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import quake_compose.demo.composeapp.generated.resources.Res
 import quake_compose.demo.composeapp.generated.resources.compose_multiplatform
+import quake_compose.demo.composeapp.generated.resources.quake_logo
 
 @Composable
 @Preview
@@ -42,7 +43,7 @@ fun App() {
                     Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Image(painterResource(Res.drawable.compose_multiplatform), null)
+                    Image(painterResource(Res.drawable.quake_logo), null)
                     Text("Quake Compose Demo")
                 }
 
